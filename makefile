@@ -6,7 +6,7 @@
 #    By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 16:24:28 by lottavi           #+#    #+#              #
-#    Updated: 2023/05/17 15:51:49 by lottavi          ###   ########.fr        #
+#    Updated: 2023/05/17 15:58:18 by lottavi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,6 @@ SHELL		=	/bin/bash
 
 NAME		= client
 NAMESV		= server
-NAMEBC		= client_bonus
-NAMEBS		= server_bonus
 LIBFT		= libft
 INC		= inc
 HEADER		= -I inc
