@@ -6,7 +6,7 @@
 #    By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 16:24:28 by lottavi           #+#    #+#              #
-#    Updated: 2023/05/17 14:29:24 by lottavi          ###   ########.fr        #
+#    Updated: 2023/05/17 14:32:21 by lottavi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CLIENT = client
 SERVER = server
 
 # source files
-COMMON_SRCS := printf
+COMMON_SRCS :=
 SERVER_SRCS := server.c
 CLIENT_SRCS := client.c
 
