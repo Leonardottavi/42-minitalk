@@ -6,7 +6,7 @@
 /*   By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 15:55:52 by lottavi           #+#    #+#             */
-/*   Updated: 2023/05/05 16:01:07 by lottavi          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:33:10 by lottavi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	ain(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	pid_t	srv_pid;
 
