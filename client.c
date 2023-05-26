@@ -6,7 +6,7 @@
 /*   By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:42:21 by lottavi           #+#    #+#             */
-/*   Updated: 2023/05/26 15:59:09 by lottavi          ###   ########.fr       */
+/*   Updated: 2023/05/26 16:07:28 by lottavi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ void	ft_scomposition(char c, int pid)
 	}
 }
 
+void	confirm(int signal)
+{
+	if (signal == SIGUSR2)
+		ft_printf("MESSAGE RECEIVED\n");
+}
+
 int	main(int argc, char **argv)
 {
 	int	i;
@@ -79,7 +85,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	if (argc != 3)
 	{
-		ft_printf("Number of parameters invalid");
+		ft_printf("Invalid number of parametres");
 		exit(1);
 	}
 	pid = ft_atoi(argv[1]);
@@ -90,11 +96,6 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR2, confirm);
 	ft_scomposition('\0', pid);
+	ft_scomposition('\n', pid);
 	return (0);
-}
-
-void	confirm(int signal)
-{
-	if (signal == SIGUSR2)
-		ft_printf("MESSAGE RECEIVED\n");
 }

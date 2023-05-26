@@ -6,12 +6,12 @@
 #    By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 10:46:32 by lottavi           #+#    #+#              #
-#    Updated: 2023/05/26 15:36:25 by lottavi          ###   ########.fr        #
+#    Updated: 2023/05/26 16:04:27 by lottavi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FT_PRINTF_PATH		=	./ft_printf
-FT_PRINTF			=	$(FT_PRINTF_PATH)/libftprintf.a
+PRINTF_PATH		=	./printf
+PRINTF			=	$(PRINTF_PATH)/libftprintf.a
 
 SOURCES_FILESS	=	client.c
 SOURCES_FILESC	=	server.c
@@ -33,21 +33,21 @@ CFLAGS			=	-Wall -Wextra -Werror
 
 all:			$(NAMEC) $(NAMES)
 
-$(NAMEC):	$(OBJECTSS) $(FT_PRINTF)
-				$(CC) $(OBJECTSS) $(FT_PRINTF) -o $(NAMEC)
-$(NAMES):	$(OBJECTSC) $(FT_PRINTF)
-				$(CC) $(OBJECTSC) $(FT_PRINTF) -o $(NAMES)
+$(NAMEC):	$(OBJECTSS) $(PRINTF)
+				$(CC) $(OBJECTSS) $(PRINTF) -o $(NAMEC)
+$(NAMES):	$(OBJECTSC) $(PRINTF)
+				$(CC) $(OBJECTSC) $(PRINTF) -o $(NAMES)
 
-$(FT_PRINTF):
-				make -C $(FT_PRINTF_PATH)
+$(PRINTF):
+				make -C $(PRINTF_PATH)
 
 clean:
 				${RM} ${OBJECTSS} ${OBJECTSC}
-				make clean -C ${FT_PRINTF_PATH}
+				make clean -C ${PRINTF_PATH}
 
 fclean:			clean
 					rm -f $(NAMEC) $(NAMES)
-					rm -f $(FT_PRINTF)
+					rm -f $(PRINTF)
 
 re:				fclean all
 

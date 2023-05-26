@@ -6,7 +6,7 @@
 /*   By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:41:52 by lottavi           #+#    #+#             */
-/*   Updated: 2023/05/26 15:59:01 by lottavi          ###   ########.fr       */
+/*   Updated: 2023/05/26 16:05:20 by lottavi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int argc, char	**argv)
 	pid = getpid();
 	ft_printf("%d", pid);
 	ft_printf("\n");
-	act.sa_sigaction = ft_handler;
+	act.sa_sigaction = ft_recomposition;
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = 0;
 	while (argc == 1)
