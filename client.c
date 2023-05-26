@@ -6,63 +6,95 @@
 /*   By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:42:21 by lottavi           #+#    #+#             */
-/*   Updated: 2023/05/23 10:42:34 by lottavi          ###   ########.fr       */
+/*   Updated: 2023/05/26 15:59:09 by lottavi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/minitalk.h"
+#include "./printf/ft_printf.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h>
 
-void	send_bytes(char c, pid_t pid);
-void	streaming(char *str, pid_t pid);
-void	ft_reciver(int sig);
-
-int	main(int argc, char *argv[])
+static int	ft_calc_num_str(const char *str)
 {
-	pid_t			pid;
-	char			*str;
+	int	i;
+	int	num;
 
-	signal(SIGUSR1, ft_reciver);
-	if (argc != 3)
+	i = 0;
+	num = 0;
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		ft_printf("Usage: %s <pid> <message>\n", argv[0]);
-		return (0);
+		if (i == 0)
+			num = (str[i] - '0');
+		else
+			num = num * 10 + (str[i] - '0');
+		i++;
 	}
-	pid = ft_atoi(argv[1]);
-	str = argv[2];
-	streaming(str, pid);
-	return (0);
+	return (num);
 }
 
-void	send_bytes(char c, pid_t pid)
+int	ft_atoi(const char *str)
+{
+	int	i;
+	int	min;
+
+	i = 0;
+	min = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\r' || str[i] == '\n'
+		|| str[i] == '\v' || str[i] == '\f')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			min++;
+		i++;
+	}
+	if (min == 1)
+		return (ft_calc_num_str(str + i) * (-1));
+	return (ft_calc_num_str(str + i));
+}
+
+void	ft_scomposition(char c, int pid)
 {
 	int	bit;
 
 	bit = 0;
 	while (bit < 8)
 	{
-		if (c & (1 << bit))
-			kill(pid, SIGUSR2);
-		else
+		if ((c & (0x01 << bit)))
 			kill(pid, SIGUSR1);
-		usleep(TIME_SLEEP);
+		else
+			kill(pid, SIGUSR2);
+		usleep(500);
 		bit++;
 	}
 }
 
-void	streaming(char *str, pid_t pid)
+int	main(int argc, char **argv)
 {
 	int	i;
+	int	pid;
 
 	i = 0;
-	while (str[i])
+	if (argc != 3)
 	{
-		send_bytes(str[i], pid);
+		ft_printf("Number of parameters invalid");
+		exit(1);
+	}
+	pid = ft_atoi(argv[1]);
+	while (argv[2][i] != '\0')
+	{
+		ft_scomposition(argv[2][i], pid);
 		i++;
 	}
-	send_bytes('\n', pid);
+	signal(SIGUSR2, confirm);
+	ft_scomposition('\0', pid);
+	return (0);
 }
 
-void	ft_reciver(int sig)
+void	confirm(int signal)
 {
-	(void)sig;
+	if (signal == SIGUSR2)
+		ft_printf("MESSAGE RECEIVED\n");
 }

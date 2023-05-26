@@ -6,30 +6,49 @@
 #    By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 10:46:32 by lottavi           #+#    #+#              #
-#    Updated: 2023/05/23 10:48:13 by lottavi          ###   ########.fr        #
+#    Updated: 2023/05/26 15:36:25 by lottavi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC=gcc
-CFLAGS=-Wall -Wextra -Werror
+FT_PRINTF_PATH		=	./ft_printf
+FT_PRINTF			=	$(FT_PRINTF_PATH)/libftprintf.a
 
-all: client server
+SOURCES_FILESS	=	client.c
+SOURCES_FILESC	=	server.c
 
-client: client.c libft/libft.a
-	$(CC) $(CFLAGS) -I./inc client.c -L./libft -lft -o client
+OBJECTSS			= 	$(SOURCES_FILESS:.c=.o)
+OBJECTSC			= 	$(SOURCES_FILESC:.c=.o)
 
-server: server.c libft/libft.a
-	$(CC) $(CFLAGS) -I./inc server.c -L./libft -lft -o server
+NAMEC			=	client
+NAMES			=	server
 
-libft/libft.a:
-	make -C libft
+CC				=	gcc
+
+RM				=	rm -f
+
+CFLAGS			=	-Wall -Wextra -Werror
+
+%.o:%.c
+	$(CC) ${CFLAGS}  -c $< -o $@
+
+all:			$(NAMEC) $(NAMES)
+
+$(NAMEC):	$(OBJECTSS) $(FT_PRINTF)
+				$(CC) $(OBJECTSS) $(FT_PRINTF) -o $(NAMEC)
+$(NAMES):	$(OBJECTSC) $(FT_PRINTF)
+				$(CC) $(OBJECTSC) $(FT_PRINTF) -o $(NAMES)
+
+$(FT_PRINTF):
+				make -C $(FT_PRINTF_PATH)
 
 clean:
-	rm -f client server *.o
+				${RM} ${OBJECTSS} ${OBJECTSC}
+				make clean -C ${FT_PRINTF_PATH}
 
-fclean: clean
-	make fclean -C libft
+fclean:			clean
+					rm -f $(NAMEC) $(NAMES)
+					rm -f $(FT_PRINTF)
 
-re: fclean all
+re:				fclean all
 
-.PHONY: all clean fclean re
+.PHONY:			all clean re

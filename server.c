@@ -6,58 +6,58 @@
 /*   By: lottavi <lottavi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:41:52 by lottavi           #+#    #+#             */
-/*   Updated: 2023/05/23 10:42:15 by lottavi          ###   ########.fr       */
+/*   Updated: 2023/05/26 15:59:01 by lottavi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/minitalk.h"
+#include "./printf/ft_printf.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h>
 
-void	ft_sig_exit(int sig);
-void	ft_sig_reciver(int sig, siginfo_t *info, void *context);
-void	ft_setup_signals(void);
-
-int	main(void)
+void	ft_recomposition(int signal, siginfo_t *info, void *context)
 {
-	ft_printf("Use this pid: %d\n", getpid());
-	ft_setup_signals();
-	while (1)
-		pause();
+	static int	bit;
+	static int	output;
+
+	(void) context;
+	if (signal == SIGUSR1)
+		output |= (0x01 << bit);
+	bit++;
+	if (bit == 8)
+	{
+		if (output == 0)
+			kill(info->si_pid, SIGUSR2);
+		else
+			ft_printf("%c", output);
+		output = 0;
+		bit = 0;
+	}
 }
 
-void	ft_setup_signals(void)
+int	main(int argc, char	**argv)
 {
+	int					pid;
 	struct sigaction	act;
 
-	act.sa_handler = SIG_DFL;
-	act.sa_sigaction = ft_sig_reciver;
-	sigemptyset(&act.sa_mask);
-	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &act, 0);
-	sigaction(SIGUSR2, &act, 0);
-	signal(SIGINT, ft_sig_exit);
-	signal(SIGTERM, ft_sig_exit);
-}
-
-void	ft_sig_reciver(int sig, siginfo_t *info, void *context)
-{
-	static struct s_unicode		uni = {0, 0};
-
-	(void)context;
-	if (sig == SIGUSR2)
-		uni.uni_char += 1 << uni.bit;
-	uni.bit++;
-	if (uni.bit == 8)
+	(void) argv;
+	if (argc != 1)
 	{
-		ft_putchar_fd(uni.uni_char, 1);
-		uni.bit = 0;
-		uni.uni_char = 0;
+		ft_printf("Error\n");
+		exit(1);
 	}
-	if (sig == SIGUSR1)
-		kill(info->si_pid, SIGUSR1);
-}
-
-void	ft_sig_exit(int sig)
-{
-	(void)sig;
-	exit(0);
+	pid = getpid();
+	ft_printf("%d", pid);
+	ft_printf("\n");
+	act.sa_sigaction = ft_handler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	while (argc == 1)
+	{
+		sigaction(SIGUSR1, &act, NULL);
+		sigaction(SIGUSR2, &act, NULL);
+		pause();
+	}
+	return (0);
 }
